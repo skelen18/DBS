@@ -25,12 +25,16 @@ Podminku na dobu trvani dejte dovnitr poddotazu, ne do vnejsiho WHERE.
 */
 
 SELECT customer_id,
-(SELECT COUNT(*)
- FROM rental R
- WHERE R.customer_id = C.customer_id
-     AND EXTRACT(DAY FROM COALESCE(R.return_date, NOW()) - R.rental_date) < 5) AS mene_nez5,
-(SELECT COUNT(*)
- FROM rental R
- WHERE R.customer_id = C.customer_id
-     AND EXTRACT(DAY FROM COALESCE(R.return_date, NOW()) - R.rental_date) < 7) AS mene_nez7
+
+    (SELECT COUNT(*)
+     FROM rental R
+     WHERE R.customer_id = C.customer_id
+         AND EXTRACT(DAY
+                     FROM COALESCE(R.return_date, NOW()) - R.rental_date) < 5) AS mene_nez5,
+
+    (SELECT COUNT(*)
+     FROM rental R
+     WHERE R.customer_id = C.customer_id
+         AND EXTRACT(DAY
+                     FROM COALESCE(R.return_date, NOW()) - R.rental_date) < 7) AS mene_nez7
 FROM customer C;
